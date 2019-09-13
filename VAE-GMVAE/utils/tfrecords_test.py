@@ -9,6 +9,7 @@ And test the dimension of the tfrecords vector, also the data and label in this 
 
 import tensorflow as tf
 import numpy as np
+import os
 
 
 def _parse_function(example_proto):
@@ -37,62 +38,49 @@ def _parse_function(example_proto):
     return parsed_features['x'], parsed_features['y']
 
 
-def get_dataset(fname):
-    """
+# filenames = ["data_1.tfrecords", "data_2.tfrecords"]
+# filenames = os.listdir(r'/home/ga62xaz/VAE-GMVAE/data/train_20k/dev_pdf_20k_splice_1f_cmn')
+filenames = ['../data/train_20k/train_pdf_20k_splice_1f_cmn/data_%s.tfrecords' % i for i in range(1, 36)]
+print("filenames: ", filenames)
+# filenames = ["data_1.tfrecords"]
 
-    Create Dataset using TF-API
-
-
-    :param fname:   filenames
-
-    :return:        dataset from TFRecords files
-
-    """
-    dataset = tf.data.TFRecordDataset(fname)
-    dataset = dataset.map(_parse_function)
-    # dataset = dataset.shuffle(buffer_size=100000)
-    dataset = dataset.batch(138420)
-    # dataset = dataset.batch(10000)
-    # dataset = dataset.batch(1)
-    # dataset = dataset.repeat(1)
-    # dataset = dataset.shuffle(buffer_size=1000).batch(32).repeat(10)
-    return dataset
-
-
-dataset = get_dataset('data_1.tfrecords')
+dataset = tf.data.TFRecordDataset(filenames)
+dataset = dataset.map(_parse_function)
+dataset = dataset.batch(3380)
 iterator = dataset.make_initializable_iterator()
-x, y = iterator.get_next()
+next_element = iterator.get_next()
 
 with tf.Session() as sess:
     sess.run(iterator.initializer)
     try:
         while True:
-            data, label = sess.run([x, y])
+            data, label = sess.run(next_element)
             # print("type(data): ", type(data))
             # print("data.shape: ", data.shape)
             # print("type(label): ", type(label))
             # print("label.shape: ", label.shape)
     except tf.errors.OutOfRangeError:
-        print("END!")
+        print("Done loading!")
 
 print("type(data): ", type(data))
 print("data.shape: ", data.shape)
+print("data.shape[-1]: ", data.shape[-1])
 print("type(label): ", type(label))
 print("label.shape: ", label.shape)
 # print("data: ", data)
 # print("label: ", label)
 data_dim = data.shape[1]
 num_data = data.shape[0]
-train_size = int(num_data*0.8)
-valid_size = int(num_data*0.1)
+train_size = int(num_data * 0.8)
+valid_size = int(num_data * 0.1)
 test_size = num_data - train_size - valid_size
 print("train_size: ", train_size)
 print("valid_size: ", valid_size)
 print("test_size: ", test_size)
 
 x_train = data[:train_size]
-x_valid = data[train_size:(train_size+valid_size)]
-x_test = data[(train_size+valid_size):]
+x_valid = data[train_size:(train_size + valid_size)]
+x_test = data[(train_size + valid_size):]
 
 x_train = np.reshape(x_train, [-1, 39, 1, 1])
 x_valid = np.reshape(x_valid, [-1, 39, 1, 1])

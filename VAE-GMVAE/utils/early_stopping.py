@@ -8,7 +8,7 @@ Created on Tue Sep 11 20:52:46 2018
 
 
 class EarlyStopping(object):
-    def __init__(self, patience=15, min_delta=0.1):
+    def __init__(self, patience=30, min_delta=0.1):
         self.patience = patience
         self.min_delta = min_delta
         self.patience_cnt = 0
@@ -27,4 +27,3 @@ class EarlyStopping(object):
             return True
         else:
             return False
-        
