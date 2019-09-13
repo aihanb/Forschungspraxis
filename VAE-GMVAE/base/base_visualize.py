@@ -21,7 +21,7 @@ class BaseVisualize:
         self.model_name = model_name
         self.result_dir = result_dir
         self.fig_size = fig_fize
-        
+
         # TODO: How to define the dictionary of colors when the values of labels are not between 0-9?
         self.colors = {0:'black', 1:'grey', 2:'blue', 3:'cyan', 4:'lime', 5:'green', 6:'yellow', 7:'gold', 8:'red', 9:'maroon'}
         
