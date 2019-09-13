@@ -1,5 +1,5 @@
 # GMVAE TF
-python3 GMVAE_main.py --model_type=2 --dataset_name=TF --sigma=0.001 --z_dim=8 --w_dim=2 --K_clusters=8 --hidden_dim=64 --num_layers=2 --epochs=20 --batch_size=32 --drop_prob=0.3 --l_rate=0.01 --train=1 --results=1 --plot=0 --restore=1 --early_stopping=1
+python3 GMVAE_main.py --model_type=2 --dataset_name=TF --sigma=0.001 --z_dim=8 --w_dim=2 --K_clusters=128 --hidden_dim=64 --num_layers=2 --epochs=200 --batch_size=32 --drop_prob=0.3 --l_rate=0.001 --train=1 --results=1 --plot=0 --restore=1 --early_stopping=0
 
 # GMVAE MNIST
 python3 GMVAE_main.py --model_type=2 --dataset_name=MNIST --sigma=0.001 --z_dim=8 --w_dim=2 --K_clusters=8 --hidden_dim=64 --num_layers=2 --epochs=20 --batch_size=32 --drop_prob=0.3 --l_rate=0.01 --train=1 --results=1 --plot=1 --restore=1 --early_stopping=1
