@@ -5,6 +5,8 @@ Created on Tue Sep 11 10:24:14 2018
 
 @author: psanch
 """
+from termcolor import colored
+
 from base.base_model import BaseModel
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
@@ -172,7 +174,8 @@ class GMVAEModel(BaseModel):
                             ' | KL_w: ' + str(KL_w) + \
                             ' | KL_y: ' + str(y_prior) + \
                             ' | L2_loss: '+  str(L2_loss)
-                            
+                # train_string = colored(train_string, 'red', attrs=['reverse', 'blink'])
+                train_string = colored(train_string, 'red')
                 if np.isnan(losses):
                     print ('Encountered NaN, stopping training. Please check the learning_rate settings and the momentum.')
                     print('Recons: ', recons)
@@ -233,6 +236,15 @@ class GMVAEModel(BaseModel):
         
             x_batch, x_labels = data.random_batch_with_labels(self.batch_size)
             x_recons, z_recons, w_recons, y_recons = self.model_graph.reconstruct_input(session, x_batch, beta=1)
+
+            # print("##################################################")
+            # print("z_recons", z_recons)
+            # print("z_recons.shape: ", z_recons.shape)
+            # print("x_labels: ", x_labels)
+            # print("x_labels.shape: ", x_labels.shape)
+            # print(type(x_labels))
+            # print("##################################################")
+
             return x_batch, x_labels, x_recons, z_recons, w_recons, y_recons 
         
     def generate_embedding(self, data):
